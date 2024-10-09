@@ -107,6 +107,10 @@
   margin-left: 8px;
 }
 
-.commentText {
-  margin-left: 9%;
+.postSection {
+  margin-bottom: 16px;
+}
+
+.commentSection {
+  margin-top: 16px;
 }
