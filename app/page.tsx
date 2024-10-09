@@ -1,48 +1,73 @@
-import { FiHeart as HeartIcon } from 'react-icons/fi';
-import { GoPaperAirplane as ShareIcon } from 'react-icons/go';
-import { LuUserCircle as ProfileIcon } from 'react-icons/lu';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import supabase from '@/supabase/client';
 import styles from './styles.module.css';
 import '../assets/global.css';
+import { PostItem, ProfileItem } from '@/components/project';
+
+export interface Post {
+  description: string;
+  like_count: number;
+  username: string;
+  created_at: string;
+  image_url: string;
+}
 
 export default function Home() {
+  const [postData, setPostData] = useState<Post[] | null>(null);
+  async function fetchPostData() {
+    const { data, error } = await supabase.from('posts').select('*');
+
+    if (error) {
+      console.error('Error fetching post:', error);
+      return null;
+    }
+
+    const formattedPosts = data.map((post: Post) => ({
+      description: post.description,
+      like_count: post.like_count,
+      username: post.username,
+      created_at: new Date(post.created_at).toLocaleDateString(), // Formatting date
+      image_url: post.image_url,
+    })) as Post[];
+
+    return formattedPosts;
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const fetchedPost = await fetchPostData();
+      setPostData(fetchedPost);
+    }
+    fetchData();
+  }, []);
+
   return (
     <main className={styles.main}>
       <div className={styles.content}>
-        <ProfileIcon size={24} />
-        <p>rbeggs</p>
-        <p>September 19</p>
-        <p>
-          In response to the growing homelessness crisis in San Francisco, a
-          local nonprofit organization, Code Tenderloin, has launched a
-          comprehensive initiative aimed at providing long-term solutions for
-          individuals experiencing homelessness. The organization, founded in
-          2015, is dedicated to addressing both immediate needs and underlying
-          causes of homelessness through a combination of shelter services, job
-          training programs, and mental health support. Read more online:
-          https://www.codetenderloin.org/
-        </p>
-
-        <p>
-          Image Link:
-          https://cdn.britannica.com/51/178051-050-3B786A55/San-Francisco.jpg
-        </p>
-
-        <HeartIcon size={24} />
-        <p>256 Likes</p>
-        <ShareIcon size={24} />
-
-        <ProfileIcon size={24} />
-        <p>daviddd</p>
-        <p>September 20</p>
-        <p>
-          This organization is doing amazing work tackling the complex root
-          causes of the issue.
-        </p>
-
-        <ProfileIcon size={24} />
-        <p>vppraggie</p>
-        <p>September 21</p>
-        <p>Thanks for sharing!</p>
+        {!postData ? (
+          <p>Loading post...</p>
+        ) : (
+          postData.map((post, index) => (
+            <div key={index} className={styles.postSection}>
+              <ProfileItem username={post.username} date={post.created_at} />
+              <div className={styles.text}>
+                <p>{post.description}</p>
+              </div>
+              <div className={styles.image}>
+                <Image
+                  src={post.image_url}
+                  width={500}
+                  height={500}
+                  alt="Post image"
+                />
+              </div>
+              <PostItem likes={`${post.like_count} Likes`} />
+            </div>
+          ))
+        )}
       </div>
     </main>
   );
