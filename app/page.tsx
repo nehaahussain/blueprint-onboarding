@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { supabase } from '@supabase/client';
 import styles from './styles.module.css';
 import '../assets/global.css';
 import { CommentItem, PostItem, ProfileItem } from '@/components/project';
