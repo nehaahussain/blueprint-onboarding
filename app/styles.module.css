@@ -86,3 +86,27 @@
   line-height: 138.462%;
   padding-bottom: 3%;
 }
+
+.postInner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.likesText {
+  margin-left: 8px;
+}
+
+.profileInner {
+  display: flex;
+  align-items: center;
+  width: 80%;
+}
+
+.username {
+  margin-left: 8px;
+}
+
+.commentText {
+  margin-left: 9%;
+}

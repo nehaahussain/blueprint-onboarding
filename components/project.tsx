@@ -5,17 +5,6 @@ import { LuUserCircle as ProfileIcon } from 'react-icons/lu';
 import styles from '@/app/styles.module.css';
 import '../assets/global.css';
 
-interface DateItemProps {
-  date: string;
-}
-const DateItem = (props: DateItemProps) => {
-  return (
-    <div className={styles.date}>
-      <div>{props.date}</div>
-    </div>
-  );
-};
-
 interface PostItemProps {
   likes: string;
 }
@@ -23,9 +12,9 @@ interface PostItemProps {
 const PostItem = (props: PostItemProps) => {
   return (
     <div className={styles.post}>
-      <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+      <div className={styles.postInner}>
         <HeartIcon size={24} />
-        <p style={{ marginLeft: '8px' }}>{props.likes}</p>
+        <p className={styles.likesText}>{props.likes}</p>
       </div>
       <ShareIcon size={24} />
     </div>
@@ -39,12 +28,12 @@ interface ProfileItemProps {
 const ProfileItem = (props: ProfileItemProps) => {
   return (
     <div className={styles.profile}>
-      <div style={{ display: 'flex', alignItems: 'center', width: '80%' }}>
+      <div className={styles.profileInner}>
         <ProfileIcon size={24} />
-        <p style={{ marginLeft: '8px' }}>{props.username}</p>
+        <p className={styles.username}>{props.username}</p>
       </div>
-      <div className={styles.dateItem}>
-        <DateItem date={props.date} />
+      <div className={styles.date}>
+        <p>{props.date}</p>
       </div>
     </div>
   );
@@ -55,14 +44,13 @@ interface CommentItemProps {
   date: string;
   comment: string;
 }
-
 const CommentItem = (props: CommentItemProps) => {
   return (
     <div className={styles.comment}>
       <ProfileItem username={props.username} date={props.date} />
-      <p style={{ marginLeft: '9%' }}>{props.comment}</p>
+      <p className={styles.commentText}>{props.comment}</p>
     </div>
   );
 };
 
-export { PostItem, CommentItem, ProfileItem, DateItem };
+export { PostItem, CommentItem, ProfileItem };
