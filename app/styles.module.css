@@ -11,6 +11,106 @@
 
 .content {
   max-width: 350px;
-  height: 100%;
+  height: auto;
   border: 1px solid black;
+  padding: 3%;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  color: #262626;
+  font-family: Poppins;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 138.462%;
+  letter-spacing: -0.07px;
+  padding-bottom: 10px;
+}
+
+.date {
+  color: #979797;
+  font-family: Poppins;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.05px;
+}
+
+.text {
+  color: #262626;
+  font-family: Poppins;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  padding-bottom: 10px;
+}
+
+.image img {
+  width: 100%;
+  max-width: 346px;
+  height: auto;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.line {
+  border: none;
+  border-top: 1px solid rgb(194, 188, 188);
+  margin: 16px 0;
+  width: 100%;
+  position: relative;
+}
+
+.post {
+  display: flex;
+  align-items: center;
+  color: #262626;
+  font-family: Poppins;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: -0.07px;
+}
+
+.comment {
+  color: #262626;
+  font-family: Poppins;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 138.462%;
+  padding-bottom: 3%;
+}
+
+.postInner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.likesText {
+  margin-left: 8px;
+}
+
+.profileInner {
+  display: flex;
+  align-items: center;
+  width: 80%;
+}
+
+.username {
+  margin-left: 8px;
+}
+
+.postSection {
+  margin-bottom: 16px;
+}
+
+.commentSection {
+  margin-top: 16px;
 }
