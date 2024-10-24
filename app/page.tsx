@@ -1,57 +1,72 @@
-import React from 'react';
-import Image from 'next/image';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import supabase from '@/supabase/client';
 import styles from './styles.module.css';
 import '../assets/global.css';
-import { CommentItem, PostItem, ProfileItem } from '@/components/project';
+import { PostItem, ProfileItem } from '@/components/project';
+
+export interface Post {
+  description: string;
+  like_count: number;
+  username: string;
+  created_at: string;
+  image_url: string;
+}
 
 export default function Home() {
+  const [postData, setPostData] = useState<Post[] | null>(null);
+  async function fetchPostData() {
+    const { data, error } = await supabase.from('posts').select('*');
+
+    if (error) {
+      console.error('Error fetching post:', error);
+      return null;
+    }
+
+    const formattedPosts = data.map((post: Post) => ({
+      description: post.description,
+      like_count: post.like_count,
+      username: post.username,
+      created_at: new Date(post.created_at).toLocaleDateString(), // Formatting date
+      image_url: post.image_url,
+    })) as Post[];
+
+    return formattedPosts;
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const fetchedPost = await fetchPostData();
+      setPostData(fetchedPost);
+    }
+    fetchData();
+  }, []);
+
   return (
     <main className={styles.main}>
       <div className={styles.content}>
-        <div className={styles.postSection}>
-          <ProfileItem username="rbeggs" date="September 19" />
-          <div className={styles.text}>
-            <p>
-              In response to the growing homelessness crisis in San Francisco, a
-              local nonprofit organization, Code Tenderloin, has launched a
-              comprehensive initiative aimed at providing long-term solutions
-              for individuals experiencing homelessness. The organization,
-              founded in 2015, is dedicated to addressing both immediate needs
-              and underlying causes of homelessness through a combination of
-              shelter services, job training programs, and mental health
-              support. Read more online:
-              <a href="https://www.codetenderloin.org/">
-                {' '}
-                https://www.codetenderloin.org/
-              </a>
-            </p>
-          </div>
-          <div className={styles.image}>
-            <Image
-              src="https://cdn.britannica.com/51/178051-050-3B786A55/San-Francisco.jpg"
-              width={500}
-              height={500}
-              alt="View of a hilly road in San Francisco, California"
-            />
-          </div>
-          <PostItem likes="256 Likes" />
-        </div>
-
-        <hr className={styles.line} />
-
-        <div className={styles.commentSection}>
-          <CommentItem
-            username="daviddd"
-            date="September 20"
-            comment="This organization is doing amazing work tackling the complex root causes of the issue."
-          />
-
-          <CommentItem
-            username="vppraggie"
-            date="September 21"
-            comment="Thanks for sharing!"
-          />
-        </div>
+        {!postData ? (
+          <p>Loading post...</p>
+        ) : (
+          postData.map((post, index) => (
+            <div key={index} className={styles.postSection}>
+              <ProfileItem username={post.username} date={post.created_at} />
+              <div className={styles.text}>
+                <p>{post.description}</p>
+              </div>
+              <div className={styles.image}>
+                <img
+                  src={post.image_url}
+                  width={500}
+                  height={500}
+                  alt="Post image"
+                />
+              </div>
+              <PostItem likes={`${post.like_count} Likes`} />
+            </div>
+          ))
+        )}
       </div>
     </main>
   );
